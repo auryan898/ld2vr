@@ -27,7 +27,7 @@ import TOOLS.Vector3;
 import TOOLS.Matrix3;
 
 import VRML2.VRML2Node;
-import VRML2.File;
+import VRML2.VRML2File;
 import VRML2.Group;
 import VRML2.Transform;
 import VRML2.IndexedFaceSet;
@@ -109,7 +109,7 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
          System.out.println("Points: 0, Faces: 0, no color.");
       }
 
-      VRML2.File f = new VRML2.File(T.getWRLFile(T.getLdrawFile(part_)));
+      VRML2.VRML2File f = new VRML2.VRML2File(T.getWRLFile(T.getLdrawFile(part_)));
 
       fileDecoration(f);
 
@@ -144,7 +144,7 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
          String ldrawDir = T.getLdrawDir(part_);
          String filename = T.getWRLExternalFile(p.getName(), ldrawDir);
 
-         f = new VRML2.File(filename);
+         f = new VRML2.VRML2File(filename);
 
          OrderedHashtable protos = getPROTOS();
          if (null != protos) {
@@ -226,7 +226,7 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
       if (options.dontOverwrite_ && file.isFile() && file.canRead()) {
          return;
       } else {
-         VRML2.File f = new VRML2.File(filename);
+         VRML2.VRML2File f = new VRML2.VRML2File(filename);
 
          if (null != localParts_) {
             for (int i = 0; i < localParts_.size(); i++) {
@@ -376,7 +376,7 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
                      .set_intensity(.6)
                      .set_direction(.7, 1, 0));
    };
-   private void fileDecoration(File f) {
+   private void fileDecoration(VRML2File f) {
       f.add(new NavigationInfo()
             .set_avatarSize(new MFFloat().add(.0001).add(.00064).add(.0003))
             .set_type(new MFString().add("WALK"))

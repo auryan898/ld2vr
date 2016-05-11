@@ -1,4 +1,4 @@
-// $Id: File.java 1.1 1998/06/17 20:21:49 parisjp Exp $
+// $Id: VRML2File.java 1.1 1998/06/17 20:21:49 parisjp Exp $
 
 //		 This file is part of LD2VR
 //		Author: Paris.Jean-Pierre@wanadoo.fr
@@ -30,26 +30,26 @@ import java.util.Vector;
  * can be named or not. If named, nodes are printed in the named file.
  * If not named, nodes are printed on the standard output.
  */
-public class File {
-   /** Build an unamed VRML file.
+public class VRML2File {
+   /** Build an unnamed VRML file.
     */
-   public File() {
+   public VRML2File() {
       name_ = null;
       nodes_ = new Vector();
    }
    /** Builds a named VRML file.
     * @param  filename  the name of the file where nodes will be printed.
     */
-   public File(String filename) {
+   public VRML2File(String filename) {
       name_ = filename;
       nodes_ = new Vector();
    }
    /** Adds a VRML node in the file. The return value allows chaining
     * <code>add</code> calls in the same statement.
     * @param  node the added VRML node
-    * @return      the File instance itself
+    * @return      the VRML2File instance itself
     */
-   public File add(VRML2Node node) {
+   public VRML2File add(VRML2Node node) {
       nodes_.addElement(node);
       return this;
    }

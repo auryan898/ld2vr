@@ -25,7 +25,7 @@ import TOOLS.Vector3;
 import TOOLS.Matrix3;
 
 import VRML2.VRML2Node;
-import VRML2.File;
+import VRML2.VRML2File;
 
 import VRML2.VALUES.Value;
 
