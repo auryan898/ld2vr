@@ -1,0 +1,6 @@
+Appearance {
+   material Material {
+      diffuseColor .647 .165 .165
+      transparency .6
+   }
+}

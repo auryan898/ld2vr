@@ -1,0 +1,7 @@
+Appearance {
+material Material {
+   diffuseColor .4 .3 .4
+   shininess .3
+   specularColor .5 .5 .5
+}
+}

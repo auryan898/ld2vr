@@ -1,0 +1,101 @@
+EXTERNPROTO p_extrus [
+exposedField SFNode app
+] "../extrus.wrl"
+
+PROTO p_stud [
+exposedField SFNode app NULL
+exposedField SFInt32 sTop 0
+exposedField SFInt32 sBot 0
+]
+{
+Switch {
+   whichChoice IS sTop
+   choice
+   [
+    LOD {
+       range [ 200, 600, 1200 ]
+       level
+       [
+        Transform {
+           children [
+              Shape {
+                 appearance IS app
+                 geometry Cylinder { radius 6 height 4 top FALSE }
+              },
+              Transform {
+                 children [
+                    p_extrus {
+                       app IS app
+                    }
+                 ]
+                 translation -1.5 -2 5.5
+                 rotation 0 0 1 3.1416
+                 scale 1.5 1.5 1.5
+              }
+           ]
+           translation 0 -2 0
+        },
+        Transform {
+           children [
+              Shape {
+                 appearance IS app
+                 geometry Cylinder { radius 6 height 4 top FALSE }
+              }
+           ]
+           translation 0 -2 0
+        },
+        Transform {
+           rotation 0 1 0 .785
+           children [
+              Shape {
+                 appearance IS app
+                 geometry Box { size 8.5 4 8.5 }
+              }
+           ]
+           translation 0 -2 0
+        },
+        Group {
+        }
+     ]
+    },
+    Transform {
+       children [
+          Shape {
+             appearance IS app
+             geometry Cylinder { radius 6 height 4 top FALSE }
+          },
+          Transform {
+             children [
+                p_extrus {
+                   app IS app
+                }
+             ]
+             translation -1.5 -2 5.5
+             rotation 0 0 1 3.1416
+             scale 1.5 1.5 1.5
+          }
+       ]
+       translation 0 -2 0
+    },
+    Transform {
+       children [
+          Shape {
+             appearance IS app
+             geometry Cylinder { radius 6 height 4 top FALSE }
+          }
+       ]
+       translation 0 -2 0
+    },
+    Transform {
+       rotation 0 1 0 .785
+       children [
+          Shape {
+             appearance IS app
+             geometry Box { size 8.5 4 8.5 }
+          }
+       ]
+       translation 0 -2 0
+    },
+ ]
+}
+}

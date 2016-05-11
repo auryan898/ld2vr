@@ -1,0 +1,6 @@
+Appearance {
+material Material {
+   diffuseColor .3 .3 1
+   transparency .6
+}
+}

@@ -1,0 +1,18 @@
+PROTO p_8-8sphe [
+exposedField SFNode app NULL
+exposedField SFInt32 sTop 0
+exposedField SFInt32 sBot 0
+]
+{
+LOD {
+   range [ 1000 ]
+   level [
+          Shape {
+             appearance IS app
+             geometry Sphere { radius 1 }
+          },
+          Group {
+          }
+       ]
+}
+}

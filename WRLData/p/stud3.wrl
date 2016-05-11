@@ -1,0 +1,23 @@
+PROTO p_stud3 [
+exposedField SFNode app NULL
+exposedField SFInt32 sTop 0
+exposedField SFInt32 sBot 0
+]
+{
+LOD {
+   range [ 1000 ]
+   level [
+          Transform {
+             children [
+                Shape {
+                   appearance IS app
+                   geometry Cylinder { radius 4 height 4 }
+                }
+             ]
+             translation 0 -2 0
+          },
+          Group {
+          }
+       ]
+}
+}
