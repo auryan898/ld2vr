@@ -17,12 +17,9 @@
 // along with for example GNU Emacs; see the file COPYING.  If not,
 // write to the Free Software Foundation, 675 Mass Ave, Cambridge, MA
 // 02139, USA.
-import java.util.Vector;
-
 import TOOLS.T;
 import TOOLS.Assert;
 import TOOLS.Point3;
-import TOOLS.Vector3;
 import TOOLS.Matrix3;
 
 import VRML2.VRML2Node;
@@ -45,7 +42,6 @@ import VRML2.VALUES.SFNode;
 import VRML2.VALUES.MFFloat;
 import VRML2.VALUES.MFString;
 import VRML2.VALUES.Alias;
-import VRML2.FIELDS.ExposedField;
 
 import LDRAWREADER.AbstLine;
 
@@ -61,16 +57,12 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
         init();
     }
 
-    ;
-
-   public PartRef(LDRAWREADER.PartRef v) {
+    public PartRef(LDRAWREADER.PartRef v) {
         super(v);
         init();
     }
 
-    ;
-
-   private void init() {
+    private void init() {
         int index = part_.lastIndexOf('.');
         Assert.t(index != -1, "Bad part file name: " + part_);
         partName_ = "p_" + part_.substring(0, index);
@@ -93,9 +85,7 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
         group_ = new Group();
     }
 
-    ;
-
-   public void parseNprint(Options options) {
+    public void parseNprint(Options options) {
         PROTO p = getPartProto(partName_ + Matrix3.id().concat(),
                 new Alias("app"), Matrix3.id(), options);
 
@@ -163,9 +153,7 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
         }
     }
 
-    ;
-
-   private PROTO getPartProto(String protoname,
+    private PROTO getPartProto(String protoname,
             Value color, Matrix3 remaining,
             Options options) {
         java.util.Vector lines = parseFile();
@@ -226,9 +214,7 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
         return result;
     }
 
-    ;
-
-   private void printSubFileProto(PROTO p, Options options) {
+    private void printSubFileProto(PROTO p, Options options) {
         String ldrawDir = T.getLdrawDir(part_);
         String filename = T.getWRLExternalFile(p.getName(), ldrawDir);
 
@@ -251,9 +237,7 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
         }
     }
 
-    ;
-
-   private java.util.Vector parseFile() {
+    private java.util.Vector parseFile() {
         try {
             String filename = T.getLdrawFile(part_);
             if (null == filename) {
@@ -274,9 +258,7 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
         return null;
     }
 
-    ;
-
-   private java.util.Vector convertLines(java.util.Vector lines) {
+    private java.util.Vector convertLines(java.util.Vector lines) {
         java.util.Vector newLines = new java.util.Vector();
 
         for (java.util.Enumeration e = lines.elements(); e.hasMoreElements();) {
@@ -298,9 +280,7 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
         return newLines;
     }
 
-    ;
-
-   public VRML2Node toVRML(PartRef parent, Value color, Matrix3 remaining,
+    public VRML2Node toVRML(PartRef parent, Value color, Matrix3 remaining,
             Options options) {
         if (part_.toLowerCase().endsWith("edge.dat")) {
             return null;
@@ -369,9 +349,7 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
         return t;
     }
 
-    ;
-
-   private void transformDecoration(Transform t) {
+    private void transformDecoration(Transform t) {
         t.add_children(new DirectionalLight()
                 .set_color(1, 1, 1)
                 .set_intensity(.4)
@@ -395,8 +373,7 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
                 .set_direction(.7, 1, 0));
     }
 
-    ;
-   private void fileDecoration(VRML2File f) {
+    private void fileDecoration(VRML2File f) {
         f.add(new NavigationInfo()
                 .set_avatarSize(new MFFloat().add(.0001).add(.00064).add(.0003))
                 .set_type(new MFString().add("WALK"))
@@ -440,9 +417,7 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
         f.add(b);
     }
 
-    ;
-
-   private static void putInHashtable(OrderedHashtable h,
+    private static void putInHashtable(OrderedHashtable h,
             Object key, Object val) {
         // There is a bug in Hashtable!
         h.put(key, val);
@@ -452,10 +427,7 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
         }
     }
 
-    ;
-
-
-   private Matrix3 computeTransform(Matrix3 remaining, Transform t) {
+    private Matrix3 computeTransform(Matrix3 remaining, Transform t) {
         //ZZZ
         Point3 p = remaining.mult(p_);
         t.set_translation(p.x, p.y, p.z);
@@ -465,20 +437,15 @@ public class PartRef extends LDRAWREADER.PartRef implements ToVrml {
         return m.toVRML2(t);
     }
 
-    ;
-
-   static public OrderedHashtable getPROTOS() {
+    static public OrderedHashtable getPROTOS() {
         return buildParts_;
     }
 
-    ;
-
-   public OrderedHashtable getLocalPROTOS() {
+    public OrderedHashtable getLocalPROTOS() {
         return localParts_;
     }
-    ;
 
-   java.util.Vector ifsArray_;
+    java.util.Vector ifsArray_;
     //PROTO[String]
     static private OrderedHashtable buildParts_ = new OrderedHashtable();
     static private OrderedHashtable fileNames_ = new OrderedHashtable();
