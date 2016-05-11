@@ -389,7 +389,7 @@ public abstract class T {
      * has not been found.
      */
     public static String getLdrawFile(String filename) {
-        String[] fns = getDatFilenames(filename);
+        String[] fns = getDatFilenames(filename.replace("\\", File.separator));
         for (int i = 0; i < fns.length; i++) {
             String fn = getFile(fns[i], LdrawDir_);
             if (null != fn) {
