@@ -17,35 +17,37 @@
 // along with for example GNU Emacs; see the file COPYING.  If not,
 // write to the Free Software Foundation, 675 Mass Ave, Cambridge, MA
 // 02139, USA.
-
 class OrderedHashtable extends java.util.Hashtable {
-   OrderedHashtable() {
-      super();
-      keys_ = new java.util.Vector();
-   }
-   
-   public synchronized Object put(Object key, Object value)
-        throws NullPointerException {
-           if (-1 == keys_.indexOf(key)) {
-              keys_.addElement(key);
-              super.put(key, value);
-              while (null == super.get(key)) {
-                 // Is there a mysterious bug in Hashtable for the
-                 // p_2-4edge000100001 key?`
-                 super.put(key, value);
-              }
-           }
-           return null;
-   };
 
-   public final synchronized Object elementAt(int index) 
-        throws ArrayIndexOutOfBoundsException {
-           return super.get(keys_.elementAt(index));
-   };
+    OrderedHashtable() {
+        super();
+        keys_ = new java.util.Vector();
+    }
 
-   public synchronized String toString() {
-      return super.toString() + "\n[" + keys_.toString() + "]";
-   };
+    @Override
+    public synchronized Object put(Object key, Object value)
+            throws NullPointerException {
+        if (-1 == keys_.indexOf(key)) {
+            keys_.addElement(key);
+            super.put(key, value);
+            while (null == super.get(key)) {
+                // Is there a mysterious bug in Hashtable for the
+                // p_2-4edge000100001 key?`
+                super.put(key, value);
+            }
+        }
+        return null;
+    }
 
-   private java.util.Vector keys_; 
+    public final synchronized Object elementAt(int index)
+            throws ArrayIndexOutOfBoundsException {
+        return super.get(keys_.elementAt(index));
+    }
+
+    @Override
+    public synchronized String toString() {
+        return super.toString() + "\n[" + keys_.toString() + "]";
+    }
+
+    private final java.util.Vector keys_;
 }

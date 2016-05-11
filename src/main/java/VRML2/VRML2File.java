@@ -23,8 +23,8 @@ package VRML2;
 import java.io.PrintWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
-import java.util.Vector;
 
 /** This class represents a file containing VRML97 nodes. A VRML file
  * can be named or not. If named, nodes are printed in the named file.
@@ -35,14 +35,14 @@ public class VRML2File {
     */
    public VRML2File() {
       name_ = null;
-      nodes_ = new Vector();
+      nodes_ = new ArrayList<>();
    }
    /** Builds a named VRML file.
     * @param  filename  the name of the file where nodes will be printed.
     */
    public VRML2File(String filename) {
       name_ = filename;
-      nodes_ = new Vector();
+      nodes_ = new ArrayList<>();
    }
    /** Adds a VRML node in the file. The return value allows chaining
     * <code>add</code> calls in the same statement.
@@ -50,7 +50,7 @@ public class VRML2File {
     * @return      the VRML2File instance itself
     */
    public VRML2File add(VRML2Node node) {
-      nodes_.addElement(node);
+      nodes_.add(node);
       return this;
    }
    /** Returns a VRML97 comment line. That is a String starting with '#'
@@ -83,7 +83,7 @@ public class VRML2File {
             PrintWriter pw = new PrintWriter(new FileOutputStream(name_));
             pw.println(header());
             for (int i = 0; i < nodes_.size(); i++) {
-               pw.println(comment("node " + i) + nodes_.elementAt(i));
+               pw.println(comment("node " + i) + nodes_.get(i));
             }
             pw.close();
          } catch (IOException e) {
@@ -94,15 +94,15 @@ public class VRML2File {
       } else {
          System.out.println(header());
          for (int i = 0; i < nodes_.size(); i++) {
-            System.out.println(comment("node " + i) + nodes_.elementAt(i));
+            System.out.println(comment("node " + i) + nodes_.get(i));
          }
       }
    }
-   
+
    /** The name of the file. May be null to indicate stdout.
     */
    protected String name_;
    /** The node's vector.
     */
-   protected Vector nodes_;
+   protected ArrayList<VRML2Node> nodes_;
 }

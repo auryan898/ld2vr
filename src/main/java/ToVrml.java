@@ -17,17 +17,14 @@
 // along with for example GNU Emacs; see the file COPYING.  If not,
 // write to the Free Software Foundation, 675 Mass Ave, Cambridge, MA
 // 02139, USA.
-
-import java.util.Vector;
-
 import TOOLS.Matrix3;
 
-import VRML2.VRML2File;
 import VRML2.VRML2Node;
 
 import VRML2.VALUES.Value;
 
 interface ToVrml {
-   public VRML2Node toVRML(PartRef part_ref, Value color,
-                           Matrix3 remaining, Options options);
-}; 
+
+    public VRML2Node toVRML(PartRef part_ref, Value color,
+            Matrix3 remaining, Options options);
+}

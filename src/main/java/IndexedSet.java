@@ -17,162 +17,167 @@
 // along with for example GNU Emacs; see the file COPYING.  If not,
 // write to the Free Software Foundation, 675 Mass Ave, Cambridge, MA
 // 02139, USA.
-
 import TOOLS.Assert;
 import TOOLS.Point3;
+import java.util.Collections;
 
 import java.util.Vector;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class IndexedSet {
-   public IndexedSet() {
-      currentIndex_ = 0;
-      indexArrays_  = new Vector();
-      points_       = new Hashtable();
-   }
-   
-   public int getIndex(Point3 p) {
-      Object i = points_.get(p);
-      if (i == null) {
-         return -1;
-      } else {
-         return ((Integer)i).intValue();
-      }
-   }
-   
-   public void put(Point3 p) {
-      points_.put(p, new Integer(currentIndex_++));
-   }
-   public int size() {
-      return points_.size();
-   }
-   public int pointCount() {
-      return points_.size();
-   }
-   public int faceCount() {
-      return indexArrays_.size();
-   }
 
-   public IndexedSet add(IndexedSet ifs) {
-      Hashtable points = ifs.points_;
-      int size = points.size();
-      int[] newIndexes = new int[size];
+    public IndexedSet() {
+        currentIndex_ = 0;
+        indexArrays_ = new ArrayList();
+        points_ = new HashMap<>();
+    }
 
-      for (Enumeration e = points.keys(); e.hasMoreElements(); ) { 
-         Point3 p = (Point3)e.nextElement();
-         int value = getIndex(p);
-         if (value == -1) {
-            newIndexes[ifs.getIndex(p)] = currentIndex_;
-            put(p);
-         } else {
-            newIndexes[ifs.getIndex(p)] = value;
-         }
-      }
-      Vector indexArrays = ifs.indexArrays_;
-      int[] indexArray;
-      for (Enumeration e = indexArrays.elements(); e.hasMoreElements(); ) {
-         int[] indexes = (int[])e.nextElement();
-         indexArray = new int[indexes.length];
-         for (int i = 0; i < indexes.length; i++) {
-            indexArray[i] = newIndexes[indexes[i]];
-         }
-         addIndexes(indexArray);
-      }
-      return this;
-   }
+    public int getIndex(Point3 p) {
+        Integer i = points_.get(p);
+        if (i == null) {
+            return -1;
+        } else {
+            return i;
+        }
+    }
 
-   public void set(Point3 p[]) {
-      int[] indexes = new int[p.length];
-      Point3 currentPoint;
-      for (int i = 0; i < p.length; i++) {
-         currentPoint = p[i];
-         int value = getIndex(currentPoint);
-         if (value == -1) {
-            put(currentPoint);
-            indexes[i] = i;
-         } else {
-            Assert.t(false, currentPoint + " appears more than once");
-         }
-      }
-      addIndexes(indexes);
-   }
+    public void put(Point3 p) {
+        points_.put(p, currentIndex_++);
+    }
 
-   public void set(Point3 p0, Point3 p1, Point3 p2) {
-      Point3[] p = new Point3[3];
-      p[0] = p0;
-      p[1] = p1;
-      p[2] = p2;
-      set(p);
-   }
+    public int size() {
+        return points_.size();
+    }
 
-   public void set(Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
-      Point3[] p = new Point3[4];
-      p[0] = p0;
-      p[1] = p1;
-      p[2] = p2;
-      p[3] = p3;
-      set(p);
-   }
+    public int pointCount() {
+        return points_.size();
+    }
 
-   public void addIndexes(int[] i) {
-      indexArrays_.addElement(i);
-   }
+    public int faceCount() {
+        return indexArrays_.size();
+    }
 
-   public VRML2.IndexedFaceSet toVRML() {
-      int currentPointIndex = 0;
-      VRML2.IndexedFaceSet ifs = new VRML2.IndexedFaceSet();
-      VRML2.Coordinate coord = new VRML2.Coordinate();
+    public IndexedSet add(IndexedSet ifs) {
+        Map<Point3, Integer> points = ifs.points_;
+        int size = points.size();
+        int[] newIndexes = new int[size];
 
-      Vector allPoints = new Vector();
-      allPoints.setSize((points_.size()));
+        for (Enumeration<Point3> e = Collections.enumeration(points.keySet()); e.hasMoreElements();) {
+            Point3 p = e.nextElement();
+            int value = getIndex(p);
+            if (value == -1) {
+                newIndexes[ifs.getIndex(p)] = currentIndex_;
+                put(p);
+            } else {
+                newIndexes[ifs.getIndex(p)] = value;
+            }
+        }
+        List<int[]> indexArrays = ifs.indexArrays_;
+        int[] indexArray;
+        for (Enumeration<int[]> e = Collections.enumeration(indexArrays); e.hasMoreElements();) {
+            int[] indexes = e.nextElement();
+            indexArray = new int[indexes.length];
+            for (int i = 0; i < indexes.length; i++) {
+                indexArray[i] = newIndexes[indexes[i]];
+            }
+            addIndexes(indexArray);
+        }
+        return this;
+    }
 
-      for (Enumeration key = points_.keys(); key.hasMoreElements() ;) { 
-         Point3 p = (Point3)(key.nextElement());
-         allPoints.setElementAt(p, ((Integer)points_.get(p)).intValue());
-      }
-      for (int i = 0; i < allPoints.size(); i++) {
-         Point3 p = (Point3)(allPoints.elementAt(i));
-         coord.add_point(p.x, p.y, p.z);
-      }
-      for (int i = 0; i < indexArrays_.size(); i++) {
-         int[] indexes = (int[])indexArrays_.elementAt(i);
-         for (int j = 0; j < indexes.length; j++) {
-            ifs.add_coordIndex(indexes[j]);
-         }
-         ifs.add_coordIndex(-1);
-      }
+    public void set(Point3 p[]) {
+        int[] indexes = new int[p.length];
+        Point3 currentPoint;
+        for (int i = 0; i < p.length; i++) {
+            currentPoint = p[i];
+            int value = getIndex(currentPoint);
+            if (value == -1) {
+                put(currentPoint);
+                indexes[i] = i;
+            } else {
+                Assert.t(false, currentPoint + " appears more than once");
+            }
+        }
+        addIndexes(indexes);
+    }
 
-      ifs.set_coord(coord);
-      return ifs;
-   }
+    public void set(Point3 p0, Point3 p1, Point3 p2) {
+        Point3[] p = new Point3[3];
+        p[0] = p0;
+        p[1] = p1;
+        p[2] = p2;
+        set(p);
+    }
 
-   public String toString() {
-      int currentPointIndex = 0;
-      Vector allPoints = new Vector();
-      allPoints.setSize((points_.size()));
-      StringBuffer sb = new StringBuffer("[\n");
-      
-      for (Enumeration key = points_.keys(); key.hasMoreElements() ;) { 
-         Point3 p = (Point3)(key.nextElement());
-         allPoints.setElementAt(p, ((Integer)points_.get(p)).intValue());
-      }
-      for (int i = 0; i < allPoints.size(); i++) {
-         Point3 p = (Point3)(allPoints.elementAt(i));
-         sb.append(" [" + i + "] " + p + "\n");
-      }
-      for (int i = 0; i < indexArrays_.size(); i++) {
-         sb.append(" [");
-         int[] indexes = (int[])indexArrays_.elementAt(i);
-         for (int j = 0; j < indexes.length; j++) {
-            sb.append(indexes[j] + " ");
-         }
-         sb.append("]\n");
-      }
-      return sb.append("]").toString();
-   }
+    public void set(Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
+        Point3[] p = new Point3[4];
+        p[0] = p0;
+        p[1] = p1;
+        p[2] = p2;
+        p[3] = p3;
+        set(p);
+    }
 
-   protected int currentIndex_;
-   protected Vector indexArrays_; // int[]
-   protected Hashtable points_; // Point3
+    public void addIndexes(int[] i) {
+        indexArrays_.add(i);
+    }
+
+    public VRML2.IndexedFaceSet toVRML() {
+        VRML2.IndexedFaceSet ifs = new VRML2.IndexedFaceSet();
+        VRML2.Coordinate coord = new VRML2.Coordinate();
+
+        Vector<Point3> allPoints = new Vector<>();
+        allPoints.setSize((points_.size()));
+
+        for (Enumeration<Point3> key = Collections.enumeration(points_.keySet()); key.hasMoreElements();) {
+            Point3 p = key.nextElement();
+            allPoints.setElementAt(p, (points_.get(p)));
+        }
+        for (int i = 0; i < allPoints.size(); i++) {
+            Point3 p = allPoints.elementAt(i);
+            coord.add_point(p.x, p.y, p.z);
+        }
+        for (int i = 0; i < indexArrays_.size(); i++) {
+            int[] indexes = indexArrays_.get(i);
+            for (int j = 0; j < indexes.length; j++) {
+                ifs.add_coordIndex(indexes[j]);
+            }
+            ifs.add_coordIndex(-1);
+        }
+
+        ifs.set_coord(coord);
+        return ifs;
+    }
+
+    public String toString() {
+        Vector<Point3> allPoints = new Vector<>();
+        allPoints.setSize((points_.size()));
+        StringBuilder sb = new StringBuilder("[\n");
+
+        for (Enumeration<Point3> key = Collections.enumeration(points_.keySet()); key.hasMoreElements();) {
+            Point3 p = key.nextElement();
+            allPoints.setElementAt(p, (points_.get(p)));
+        }
+        for (int i = 0; i < allPoints.size(); i++) {
+            Point3 p = allPoints.elementAt(i);
+            sb.append(" [").append(i).append("] ").append(p).append("\n");
+        }
+        for (int i = 0; i < indexArrays_.size(); i++) {
+            sb.append(" [");
+            int[] indexes = indexArrays_.get(i);
+            for (int j = 0; j < indexes.length; j++) {
+                sb.append(indexes[j]).append(" ");
+            }
+            sb.append("]\n");
+        }
+        return sb.append("]").toString();
+    }
+
+    protected int currentIndex_;
+    protected List<int[]> indexArrays_; // int[]
+    protected Map<Point3, Integer> points_; // Point3
 }
