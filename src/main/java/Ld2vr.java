@@ -76,6 +76,24 @@ public class Ld2vr {
                         System.exit(1);
                     }
                     ++index;
+                } else if (args[index].equals("-ldraw-dir") && index + 1 < args.length) {
+                    TOOLS.T.LdrawDir_ = args[index + 1];
+                    if (!TOOLS.T.LdrawDir_.endsWith(File.separator)) {
+                        TOOLS.T.LdrawDir_ += File.separator;
+                    }
+                    ++index;
+                } else if (args[index].equals("-wrl-output-dir") && index + 1 < args.length) {
+                    TOOLS.T.WrlOutputDir_ = args[index + 1];
+                    if (!TOOLS.T.WrlOutputDir_.endsWith(File.separator)) {
+                        TOOLS.T.WrlOutputDir_ += File.separator;
+                    }
+                    ++index;
+                } else if (args[index].equals("-install-dir") && index + 1 < args.length) {
+                    TOOLS.T.WrlDataDir_ = args[index + 1];
+                    if (!TOOLS.T.WrlDataDir_.endsWith(File.separator)) {
+                        TOOLS.T.WrlDataDir_ += File.separator;
+                    }
+                    ++index;
                 } else {
                     usage();
                 }
